@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¡Felices 27, Yessica! ✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-cream: #FFFDF9;
+      --lilac-soft: #F3E8FF;
+      --lilac-main: #D8B4FE;
+      --lavender-deep: #9333EA;
+      --lavender-dark: #581C87;
+      --yellow-pastel: #FEF3C7;
+      --gold-main: #F59E0B;
+      --gold-light: #FDE68A;
+      --pink-pastel: #FCE7F3;
+      --text-dark: #3B1D5A;
+      --text-muted: #6B4E8A;
+      --card-shadow: 0 12px 35px -5px rgba(147, 51, 234, 0.12), 0 4px 15px -2px rgba(245, 158, 11, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, var(--bg-cream) 0%, var(--lilac-soft) 50%, var(--yellow-pastel) 100%);
+      background-attachment: fixed;
+      color: var(--text-dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    h1, h2, h3, .serif-font { font-family: 'Cormorant Garamond', serif; }
+    .muted-text { color: var(--text-muted); margin-bottom: 16px; }
+
+    #particles-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 1;
+    }
+
+    .top-bar {
+      position: fixed; top: 15px; right: 15px; z-index: 900;
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end;
+    }
+
+    .tool-btn {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid var(--lilac-main);
+      color: var(--lavender-dark);
+      padding: 8px 14px; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.12);
+      transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    .tool-btn:hover { transform: translateY(-2px); background: var(--yellow-pastel); border-color: var(--gold-main); }
+
+    #welcome-screen {
+      position: fixed; inset: 0; z-index: 1000;
+      background: radial-gradient(circle at center, #FFFDF9 0%, #F3E8FF 60%, #FEF3C7 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+      transition: opacity 0.9s ease, transform 0.9s ease, visibility 0.9s;
+    }
+
+    #welcome-screen.hidden { opacity: 0; transform: scale(1.08); visibility: hidden; pointer-events: none; }
+
+    .welcome-card {
+      background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px);
+      padding: 48px 36px; border-radius: 32px; border: 2px solid rgba(216, 180, 254, 0.6);
+      box-shadow: var(--card-shadow); max-width: 520px; width: 100%;
+    }
+
+    .welcome-badge {
+      display: inline-block; background: var(--yellow-pastel); color: #92400E;
+      padding: 6px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+      margin-bottom: 16px; border: 1px solid var(--gold-light);
+    }
+
+    .welcome-title { font-size: clamp(2rem, 5vw, 3rem); color: var(--lavender-dark); margin-bottom: 12px; }
+    .welcome-name { font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--gold-main); font-weight: 700; margin-bottom: 28px; display: inline-block; padding: 2px 8px; }
+
+    .btn-magic {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #9333EA 100%);
+      background-size: 200% auto; color: white; border: none;
+      padding: 16px 34px; font-size: 1.05rem; font-weight: 700; border-radius: 999px;
+      cursor: pointer; box-shadow: 0 10px 25px rgba(147, 51, 234, 0.3); transition: all 0.35s ease;
+    }
+
+    .btn-magic:hover { background-position: right center; transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 30px rgba(245, 158, 11, 0.4); }
+
+    main {
+      position: relative; z-index: 10; max-width: 1000px; margin: 0 auto;
+      padding: 80px 20px 100px; display: flex; flex-direction: column; gap: 60px;
+    }
+
+    .section-card {
+      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(14px);
+      border-radius: 32px; padding: clamp(28px, 5vw, 52px);
+      border: 2px solid rgba(216, 180, 254, 0.55); box-shadow: var(--card-shadow);
+      text-align: center; position: relative; overflow: hidden;
+    }
+
+    .section-title { font-size: clamp(2rem, 4.5vw, 2.5rem); color: var(--lavender-dark); margin-bottom: 8px; }
+    .hero-27-badge { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 15px auto 25px; }
+    .deco-icon { font-size: 2.2rem; }
+
+    .number-27 {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(5rem, 14vw, 8.5rem);
+      font-weight: 700; line-height: 1;
+      background: linear-gradient(135deg, #D97706 0%, #FDE68A 45%, #9333EA 85%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 6px 18px rgba(245, 158, 11, 0.35));
+      animation: floatSlow 4s ease-in-out infinite;
+    }
+
+    @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+
+    .hero-title { font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--lavender-dark); margin-bottom: 12px; }
+    .hero-subtitle { font-size: clamp(1.15rem, 2.5vw, 1.4rem); color: var(--text-muted); max-width: 680px; margin: 0 auto 22px; }
+
+    .chapter-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(90deg, var(--lilac-soft), var(--yellow-pastel));
+      padding: 12px 26px; border-radius: 999px; font-weight: 700;
+      color: var(--lavender-dark); border: 1.5px solid var(--lilac-main); margin-top: 8px;
+    }
+
+    .cake-container { margin: 30px auto; max-width: 380px; position: relative; }
+    .cake-topper-27 { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 700; color: var(--gold-main); text-shadow: 0 2px 8px rgba(245, 158, 11, 0.4); margin-bottom: 4px; }
+    .candles-row { display: flex; justify-content: center; gap: 22px; margin-bottom: -12px; position: relative; z-index: 3; }
+
+    .candle {
+      width: 18px; height: 58px;
+      background: repeating-linear-gradient(45deg, #FFF, #FFF 6px, var(--lilac-main) 6px, var(--lilac-main) 12px);
+      border-radius: 6px 6px 2px 2px; position: relative; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: transform 0.2s;
+    }
+    .candle:hover { transform: scale(1.08); }
+
+    .flame {
+      width: 16px; height: 26px;
+      background: radial-gradient(ellipse at bottom, #FFF 10%, #FDE047 45%, #F59E0B 85%);
+      border-radius: 50% 50% 35% 35%; position: absolute; top: -28px; left: 1px;
+      box-shadow: 0 0 16px #F59E0B, 0 0 28px #FDE047;
+      animation: flicker 0.9s infinite alternate; transform-origin: bottom center;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .candle.out .flame { opacity: 0; transform: scale(0.1) translateY(10px); pointer-events: none; }
+    @keyframes flicker { 0% { transform: scale(1) rotate(-2deg); } 100% { transform: scale(1.08, 0.95) rotate(2deg); } }
+
+    .cake-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .wish-granted-banner {
+      display: none; margin-top: 22px; padding: 18px 24px;
+      background: linear-gradient(135deg, var(--yellow-pastel), var(--lilac-soft));
+      border: 2px solid var(--gold-main); border-radius: 20px; font-weight: 700;
+      color: var(--lavender-dark); animation: popIn 0.5s ease forwards;
+    }
+    .wish-granted-banner.show { display: block; }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 26px; margin-top: 32px; }
+
+    .photo-card {
+      background: #FFF; border-radius: 24px; padding: 14px 14px 18px;
+      border: 2px solid var(--lilac-main); box-shadow: 0 8px 20px rgba(147, 51, 234, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; gap: 14px;
+    }
+    .photo-card:hover { transform: translateY(-6px); box-shadow: 0 14px 28px rgba(147, 51, 234, 0.18); border-color: var(--gold-main); }
+
+    .photo-frame {
+      width: 100%; aspect-ratio: 3 / 4; border-radius: 16px;
+      background: linear-gradient(135deg, var(--lilac-soft), var(--yellow-pastel));
+      position: relative; overflow: hidden; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: transform 0.4s ease; }
+    .photo-frame:hover img { transform: scale(1.04); }
+    .photo-placeholder { padding: 16px; color: var(--text-muted); font-size: 0.9rem; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .photo-caption { font-size: 1rem; font-weight: 600; color: var(--lavender-dark); padding: 0 6px; }
+
+    .upload-label {
+      display: inline-block; background: var(--lilac-soft); color: var(--lavender-dark);
+      font-size: 0.8rem; font-weight: 600; padding: 6px 12px; border-radius: 999px;
+      cursor: pointer; transition: background 0.2s; align-self: center; margin-top: 4px;
+    }
+    .upload-label:hover { background: var(--gold-light); }
+
+    .envelope-wrapper { max-width: 720px; margin: 24px auto 0; }
+    .envelope-header {
+      background: linear-gradient(135deg, #D8B4FE 0%, #C084FC 100%);
+      border: 2px solid var(--gold-light); border-radius: 24px; padding: 28px;
+      cursor: pointer; box-shadow: 0 12px 25px rgba(147, 51, 234, 0.2);
+      transition: transform 0.3s ease; color: var(--lavender-dark);
+    }
+    .envelope-header:hover { transform: translateY(-4px); }
+
+    .wax-seal {
+      width: 58px; height: 58px; background: radial-gradient(circle, #FDE047, #D97706);
+      border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); border: 2px solid #FFF;
+    }
+    .envelope-to { font-size: 1.6rem; }
+    .envelope-hint { font-size: 0.92rem; margin-top: 4px; }
+
+    .letter-paper {
+      background: #FFFDF9; border: 2px solid var(--gold-light); border-radius: 24px;
+      padding: clamp(26px, 5vw, 48px); margin-top: 16px; text-align: left;
+      box-shadow: inset 0 0 30px rgba(254, 243, 199, 0.5), 0 10px 25px rgba(0,0,0,0.06); display: none;
+    }
+    .letter-paper.open { display: block; animation: popIn 0.45s ease forwards; }
+    .letter-paper p { margin-bottom: 18px; font-size: 1.08rem; color: var(--text-dark); }
+    .letter-signature { margin-top: 26px; text-align: right; font-size: 1.25rem !important; color: var(--lavender-dark) !important; }
+
+    .surprise-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin: 24px 0; }
+    .surprise-star {
+      background: linear-gradient(135deg, var(--yellow-pastel), var(--lilac-soft));
+      border: 2px solid var(--gold-main); border-radius: 20px; padding: 12px 20px;
+      font-weight: 700; color: var(--lavender-dark); cursor: pointer; transition: all 0.25s;
+    }
+    .surprise-star:hover { transform: scale(1.07); background: var(--gold-light); }
+
+    .surprise-output {
+      min-height: 60px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; font-weight: 600; color: var(--lavender-deep);
+      background: rgba(243, 232, 255, 0.6); border-radius: 16px; padding: 16px; margin-top: 12px;
+    }
+
+    .divider { border: none; border-top: 1.5px dashed var(--lilac-main); margin: 36px 0; }
+    .wish-form-title { font-size: 1.9rem; color: var(--lavender-dark); margin-bottom: 12px; }
+    .wish-input {
+      width: 100%; max-width: 540px; padding: 14px 18px; border-radius: 16px;
+      border: 2px solid var(--lilac-main); font-family: inherit; font-size: 1rem; margin-bottom: 14px; outline: none;
+    }
+    .wish-input:focus { border-color: var(--gold-main); }
+    .wish-feedback { margin-top: 14px; font-weight: 700; color: var(--gold-main); display: none; }
+
+    #lightbox {
+      position: fixed; inset: 0; background: rgba(35, 12, 58, 0.88); backdrop-filter: blur(8px);
+      z-index: 2000; display: none; align-items: center; justify-content: center;
+      padding: 20px; flex-direction: column; gap: 14px;
+    }
+    #lightbox.active { display: flex; }
+    #lightbox img { max-width: 92vw; max-height: 78vh; border-radius: 18px; border: 3px solid var(--gold-light); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+    #lightbox-caption { color: #FFF; font-size: 1.2rem; font-weight: 600; text-align: center; }
+
+    @media (max-width: 600px) {
+      .top-bar { top: 10px; right: 10px; left: 10px; justify-content: center; }
+      .tool-btn { font-size: 0.78rem; padding: 7px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="top-bar">
+    <button class="tool-btn" id="music-toggle-btn" title="Reproducir / Pausar música">🎵 Música: OFF</button>
+    <label class="tool-btn" title="Cargar tu propio archivo MP3">📂 Canción <input type="file" id="audio-upload" accept="audio/*" style="display:none"></label>
+    <button class="tool-btn" id="rain-btn">💛 Lluvia Mágica</button>
+  </div>
+
+  <section id="welcome-screen">
+    <div class="welcome-card">
+      <span class="welcome-badge">✨ Capítulo 27 ✨</span>
+      <h1 class="welcome-title">Hoy es un día muy especial...</h1>
+      <p class="muted-text">Un detalle hecho con mucho cariño para:</p>
+      <div class="welcome-name" id="txt-birthday-name">Yessica ✨</div>
+      <br>
+      <button class="btn-magic" id="open-gift-btn">ABRIR MI REGALO ✨</button>
+    </div>
+  </section>
+
+  <main>
+    <section class="section-card">
+      <div class="hero-27-badge">
+        <span class="deco-icon">🌸✨</span>
+        <div class="number-27">27</div>
+        <span class="deco-icon">✨🦋</span>
+      </div>
+      <h2 class="hero-title" id="txt-hero-title">¡FELICES 27!</h2>
+      <p class="hero-subtitle" id="txt-hero-subtitle">Que este sea un día especial para ti</p>
+      <div class="chapter-pill" id="txt-dedicatoria-corta">💛 Tal vez sea el último que te haga, pero no deja de ser especial 💜</div>
+    </section>
+
+    <section class="section-card">
+      <h2 class="section-title">Es momento de pedir un deseo... 🎂</h2>
+      <p class="muted-text">Haz clic en las velitas para apagarlas o presiona el botón para apagarlas todas de una vez.</p>
+
+      <div class="cake-container">
+        <div class="cake-topper-27">✨ 27 ✨</div>
+        <div class="candles-row" id="candles-container">
+          <div class="candle" data-index="0"><div class="flame"></div></div>
+          <div class="candle" data-index="1"><div class="flame"></div></div>
+          <div class="candle" data-index="2"><div class="flame"></div></div>
+          <div class="candle" data-index="3"><div class="flame"></div></div>
+          <div class="candle" data-index="4"><div class="flame"></div></div>
+        </div>
+        <svg viewBox="0 0 300 170" width="100%" height="auto">
+          <ellipse cx="150" cy="155" rx="135" ry="12" fill="#E9D5FF" />
+          <rect x="45" y="85" width="210" height="68" rx="16" fill="#FEF3C7" stroke="#F59E0B" stroke-width="3"/>
+          <path d="M45 95 Q65 115 85 95 T125 95 T165 95 T205 95 T255 95 L255 85 L45 85 Z" fill="#D8B4FE"/>
+          <rect x="75" y="30" width="150" height="58" rx="14" fill="#FCE7F3" stroke="#D8B4FE" stroke-width="3"/>
+          <path d="M75 42 Q95 60 112 42 T150 42 T187 42 T225 42 L225 30 L75 30 Z" fill="#FDE68A"/>
+          <circle cx="95" cy="122" r="5" fill="#9333EA"/>
+          <circle cx="150" cy="122" r="5" fill="#F59E0B"/>
+          <circle cx="205" cy="122" r="5" fill="#9333EA"/>
+        </svg>
+      </div>
+
+      <div class="cake-actions">
+        <button class="btn-magic" id="blow-all-btn">APAGAR TODAS LAS VELITAS ✨</button>
+        <button class="tool-btn" id="relight-btn" style="display: none;">🔥 Volver a encender velas</button>
+      </div>
+
+      <div class="wish-granted-banner" id="wish-banner">
+        ¡Deseo concedido! Que tus 27 estén llenos de la gracia de Dios, amor y felicidad 💛💜
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2 class="section-title" id="txt-gallery-title">Un poco de lo que veo en ti 💜</h2>
+      <p class="muted-text">Toca cualquier fotografía para verla en pantalla completa.</p>
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </section>
+
+    <section class="section-card">
+      <h2 class="section-title">Una carta para ti 💌</h2>
+      <p class="muted-text">Toca el sobre lila para abrir o cerrar tu mensaje</p>
+
+      <div class="envelope-wrapper">
+        <div class="envelope-header" id="envelope-btn">
+          <div class="wax-seal">💛</div>
+          <h3 class="envelope-to">Para: <span id="envelope-recipient">Yessica ✨</span></h3>
+          <p class="envelope-hint" id="envelope-status-text">Haz clic aquí para abrir la carta ✨</p>
+        </div>
+
+        <div class="letter-paper" id="letter-paper">
+          <div id="txt-letter-body">
+            <p>Con toda la sinceridad del mundo, te deseo un feliz día, que la gracia del Señor siempre sea contigo, espero que disfrutes tu día y que este nuevo año sea de gran provecho para ti, te deseo lo mejor en tu vida y que sin importar la adversidad el Señor siempre te acompañe a donde quiera que estés.</p>
+            <p>Siempre he resaltado las cosas buenas de ti y sabes de sobra lo que pienso de ti, no me alcanzarían las palabras para poder decirte todo lo que has significado para mí, y todo lo lindo que me hiciste vivir, de verdad lo valoro mucho, porque fueron cosas que nunca había sentido con nadie, fuiste mi primera vez en muchas cosas y te agradezco por ello.</p>
+            <p>De aquí en adelante todo será un poco distinto, pero eso no quita el aprecio que te tengo, porque como te he dicho siempre podrás contar conmigo sin importar lo que pase.</p>
+            <p>Creo firmemente que eres una persona que siempre ha tenido el respaldo de Dios y deseo que sigas así porque lo haces muy bien y todo lo haces para Dios lo haces con amor y eso sin duda es motivo de admirar, y sé que más adelante podrás hacer muchas más cosas para el Señor en la medida que Él te lo permita.</p>
+            <p>Sabes de sobra que mi corazón te quiere mucho aún en la situación, sabes que ocupas un lugar allí por el momento.</p>
+            <p>Todas aquellas metas y objetivos que tengas a futuro deseo que se te cumplan y que vayas cumpliendo lo que el Señor te vaya permitiendo conseguir a medida que vayas avanzando.</p>
+            <p>Disfruta mucho tu día, sé lo especial que es para ti este día y deseo que lo vivas de la manera más feliz que puedas, sé que tienes a personas en tu vida que te harán sentir muy querida en este día, de verdad nada me haría más feliz que tú lo seas. Te deseo lo mejor en este cumpleaños, no se sabe si para el próximo aún estemos, ya con este han sido 4 cumpleaños en los que le he dicho a Dios gracias por la vida de Yessica.</p>
+            <p>Hoy quiero que en lo posible solo pienses en ti y en todo lo que ha hecho Dios en tu vida, porque sin duda alguna es motivo de agradecer porque hasta aquí el Señor te ha traído. <strong>DISFRUTA TU DÍA.</strong></p>
+            <p class="letter-signature"><strong>Fernando te quiere. 💛💜</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2 class="section-title">Pequeñas dosis de cariño ✨</h2>
+      <p class="muted-text">Toca cada botón para descubrir un mensaje para ti:</p>
+
+      <div class="surprise-grid">
+        <button class="surprise-star" data-msg="0">💛 Mensaje 1</button>
+        <button class="surprise-star" data-msg="1">💜 Mensaje 2</button>
+        <button class="surprise-star" data-msg="2">✨ Mensaje 3</button>
+        <button class="surprise-star" data-msg="3">🦋 Mensaje 4</button>
+        <button class="surprise-star" data-msg="4">🌸 Mensaje 5</button>
+      </div>
+
+      <div class="surprise-output" id="surprise-output">¡Toca cualquiera de los botones de arriba para revelar un mensaje! ✨</div>
+
+      <hr class="divider">
+
+      <h3 class="wish-form-title serif-font">Escribe un deseo para tus 27 🌟</h3>
+      <input type="text" id="custom-wish-input" class="wish-input" placeholder="Escribe aquí tu deseo o propósito para este nuevo año..." />
+      <br>
+      <button class="btn-magic" id="send-wish-btn">GUARDAR MI DESEO ✨</button>
+      <p id="wish-saved-feedback" class="wish-feedback"></p>
+    </section>
+  </main>
+
+  <div id="lightbox">
+    <img id="lightbox-img" src="" alt="Fotografía ampliada" />
+    <p id="lightbox-caption"></p>
+    <button class="tool-btn" id="close-lightbox-btn">✖ Cerrar vista</button>
+  </div>
+
+  <audio id="bg-audio" loop></audio>
+
+  <script>
+    // Las 6 fotos con los nombres exactos que pusiste en tu carpeta (`1.png`, `f2.jpeg`, etc.)
+    const FOTOS_YESSICA = [
+      { archivo: 'f1.png', frase: 'ME GUSTABA VERTE CON TU CABELLO SUELTO ✨' },
+      { archivo: 'f2.jpeg', frase: 'ADMIRO LA FORMA EN COMO ADORAS A DIOS 💛' },
+      { archivo: 'f3.jpeg', frase: 'Y  CON EL PELO RECOGIDO TAMBIÉN 💜' },
+      { archivo: 'f4.jpeg', frase: 'ESTA FOTO ME GUSTABA MUCHO 🌸' },
+      { archivo: 'f5.jpeg', frase: 'WUAOOO 🌟' },
+      { archivo: 'f6.jpeg', frase: 'TE VEIAS MUY LINDA🦋' }
+    ];
+
+    const FRASES_SORPRESA = [
+      '✨ Que la gracia y el favor de Dios te acompañen en cada paso de tus 27.',
+      '💛 Todo lo que haces para Dios con amor tiene una recompensa hermosa.',
+      '💜 Nunca olvides lo valiosa que eres y la luz tan bonita que transmites.',
+      '🦋 Que cada meta y sueño que hay en tu corazón se cumpla en el tiempo de Dios.',
+      '🌸 Gracias por todos los momentos bonitos; siempre podrás contar conmigo.'
+    ];
+
+    function renderGallery() {
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = '';
+      FOTOS_YESSICA.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+        const hasImg = Boolean(item.archivo);
+
+        card.innerHTML = `
+          <div class="photo-frame ${hasImg ? 'has-image' : ''}" data-idx="${idx}">
+            <img src="${item.archivo}" alt="Foto ${idx + 1}" style="${hasImg ? 'display:block;' : 'display:none;'}" />
+            <div class="photo-placeholder" style="${hasImg ? 'display:none;' : 'display:flex;'}">
+              <span style="font-size: 2rem;">📸</span>
+              <span>Subir foto #${idx + 1}</span>
+            </div>
+          </div>
+          <div class="photo-caption">${item.frase}</div>
+          <label class="upload-label">
+            📷 Cambiar foto
+            <input type="file" accept="image/*" data-upload-idx="${idx}" style="display: none;" />
+          </label>
+        `;
+
+        if (hasImg) {
+          card.querySelector('.photo-frame').addEventListener('click', () => {
+            document.getElementById('lightbox-img').src = item.archivo;
+            document.getElementById('lightbox-caption').textContent = item.frase;
+            document.getElementById('lightbox').classList.add('active');
+          });
+        }
+
+        card.querySelector('input[type="file"]').addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            FOTOS_YESSICA[idx].archivo = evt.target.result;
+            renderGallery();
+          };
+          reader.readAsDataURL(file);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById('open-gift-btn').addEventListener('click', () => {
+      document.getElementById('welcome-screen').classList.add('hidden');
+      triggerCelebrationBurst(80);
+    });
+
+    const candles = document.querySelectorAll('.candle');
+    const blowAllBtn = document.getElementById('blow-all-btn');
+    const relightBtn = document.getElementById('relight-btn');
+    const wishBanner = document.getElementById('wish-banner');
+
+    function checkAllCandlesOut() {
+      const allOut = Array.from(candles).every(c => c.classList.contains('out'));
+      if (allOut) {
+        wishBanner.classList.add('show');
+        relightBtn.style.display = 'inline-flex';
+        blowAllBtn.style.display = 'none';
+        triggerCelebrationBurst(110);
+      }
+    }
+
+    candles.forEach(candle => {
+      candle.addEventListener('click', () => {
+        if (!candle.classList.contains('out')) {
+          candle.classList.add('out');
+          checkAllCandlesOut();
+        }
+      });
+    });
+
+    blowAllBtn.addEventListener('click', () => {
+      candles.forEach((c, i) => {
+        setTimeout(() => {
+          c.classList.add('out');
+          if (i === candles.length - 1) checkAllCandlesOut();
+        }, i * 90);
+      });
+    });
+
+    relightBtn.addEventListener('click', () => {
+      candles.forEach(c => c.classList.remove('out'));
+      wishBanner.classList.remove('show');
+      relightBtn.style.display = 'none';
+      blowAllBtn.style.display = 'inline-block';
+    });
+
+    const envelopeBtn = document.getElementById('envelope-btn');
+    const letterPaper = document.getElementById('letter-paper');
+    const envelopeStatus = document.getElementById('envelope-status-text');
+
+    envelopeBtn.addEventListener('click', () => {
+      const isOpen = letterPaper.classList.toggle('open');
+      envelopeStatus.textContent = isOpen ? 'Haz clic aquí para cerrar la carta 💌' : 'Haz clic aquí para abrir la carta ✨';
+    });
+
+    const surpriseOutput = document.getElementById('surprise-output');
+    document.querySelectorAll('.surprise-star').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.dataset.msg);
+        surpriseOutput.textContent = FRASES_SORPRESA[idx];
+        triggerCelebrationBurst(25);
+      });
+    });
+
+    const wishInput = document.getElementById('custom-wish-input');
+    const wishFeedback = document.getElementById('wish-saved-feedback');
+
+    document.getElementById('send-wish-btn').addEventListener('click', () => {
+      const val = wishInput.value.trim();
+      if (!val) return;
+      wishFeedback.style.display = 'block';
+      wishFeedback.textContent = '🌟 ¡Que Dios conceda los anhelos de tu corazón en tus 27!: "' + val + '"';
+      triggerCelebrationBurst(60);
+    });
+
+    document.getElementById('close-lightbox-btn').addEventListener('click', () => {
+      document.getElementById('lightbox').classList.remove('active');
+    });
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'lightbox') document.getElementById('lightbox').classList.remove('active');
+    });
+
+    let audioCtx = null;
+    let isPlayingMusic = false;
+    let melodyInterval = null;
+    const bgAudio = document.getElementById('bg-audio');
+    const musicBtn = document.getElementById('music-toggle-btn');
+
+    function playMusicBoxNote(freq, duration) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function startSynthMelody() {
+      const notes = [261.6, 261.6, 293.6, 261.6, 349.2, 329.6, 261.6, 261.6, 293.6, 261.6, 392.0, 349.2];
+      let step = 0;
+      playMusicBoxNote(notes[0], 0.6);
+      melodyInterval = setInterval(() => {
+        step = (step + 1) % notes.length;
+        playMusicBoxNote(notes[step], 0.65);
+      }, 650);
+    }
+
+    musicBtn.addEventListener('click', () => {
+      isPlayingMusic = !isPlayingMusic;
+      if (isPlayingMusic) {
+        musicBtn.textContent = '🎵 Música: ON';
+        if (bgAudio.src) bgAudio.play();
+        else startSynthMelody();
+      } else {
+        musicBtn.textContent = '🎵 Música: OFF';
+        bgAudio.pause();
+        clearInterval(melodyInterval);
+      }
+    });
+
+    document.getElementById('audio-upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      clearInterval(melodyInterval);
+      bgAudio.src = URL.createObjectURL(file);
+      bgAudio.play();
+      isPlayingMusic = true;
+      musicBtn.textContent = '🎵 Música: ON';
+    });
+
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const SYMBOLS = ['✨', '💛', '💜', '🌸', '🦋', '⭐'];
+
+    function createParticle(x, y, burst = false) {
+      return {
+        x: x ?? Math.random() * canvas.width,
+        y: y ?? -20,
+        vx: burst ? (Math.random() - 0.5) * 8 : (Math.random() - 0.5) * 1.2,
+        vy: burst ? (Math.random() - 0.8) * 8 : Math.random() * 1.8 + 0.8,
+        size: Math.random() * 14 + 12,
+        symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+        life: 1,
+        decay: burst ? 0.012 : 0.002
+      };
+    }
+
+    function triggerCelebrationBurst(count = 60) {
+      for (let i = 0; i < count; i++) {
+        particles.push(createParticle(canvas.width / 2, canvas.height / 2, true));
+      }
+    }
+
+    document.getElementById('rain-btn').addEventListener('click', () => {
+      for (let i = 0; i < 45; i++) {
+        particles.push(createParticle(Math.random() * canvas.width, -10, false));
+      }
+    });
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (particles.length < 18 && Math.random() < 0.08) {
+        particles.push(createParticle());
+      }
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.font = `${p.size}px serif`;
+        ctx.fillText(p.symbol, p.x, p.y);
+        if (p.y > canvas.height + 30 || p.life <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    renderGallery();
+    animateParticles();
+  </script>
+</body>
+</html>
